@@ -1199,4 +1199,16 @@ body.playing .dock-cover img {
   .playlist-drawer .drawer-panel-glass {
     width: 100vw;
   }
+}/* ============================================================
+   CLEAN TOP BAR
+   Remove Atmosphere + Spotify + YouTube Music
+   Keep Playlist
+   ============================================================ */
+
+#theme-btn {
+  display: none !important;
+}
+
+.external-links {
+  display: none !important;
 }
