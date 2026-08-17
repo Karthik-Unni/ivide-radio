@@ -26,6 +26,120 @@
   --dock-height: 82px;
   --ease-apple: cubic-bezier(0.25, 1, 0.5, 1);
 }
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.loading-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(6px) brightness(0.5);
+  transform: scale(1.05);
+}
+
+.loading-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 7, 4, 0.55);
+}
+
+.loading-content {
+  text-align: center;
+  color: var(--cream, #f4ece0);
+  padding: 24px;
+}
+
+.loading-plate {
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  font-size: 13px;
+  color: var(--accent, #e7a93c);
+  border: 1.5px solid var(--accent, #e7a93c);
+  border-radius: 4px;
+  padding: 4px 14px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.loading-title {
+  font-family: 'Baloo Bhai 2', sans-serif;
+  font-size: clamp(32px, 6vw, 52px);
+  margin: 0 0 6px;
+}
+
+.loading-status {
+  color: rgba(244, 236, 224, 0.7);
+  font-size: 14px;
+  margin: 0 0 28px;
+  min-height: 20px;
+}
+
+.start-engine-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent, #e7a93c);
+  color: #1c1712;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  animation: key-pulse 1.8s ease-in-out infinite;
+}
+
+.start-engine-btn:hover { filter: brightness(1.05); }
+.start-engine-btn:active { transform: scale(0.97); }
+
+.key-icon {
+  display: inline-block;
+  animation: key-jiggle 0.6s ease-in-out infinite;
+}
+
+@keyframes key-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(231, 169, 60, 0.5); }
+  50% { box-shadow: 0 0 0 14px rgba(231, 169, 60, 0); }
+}
+
+@keyframes key-jiggle {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+
+.loading-bar-track {
+  width: 220px;
+  height: 4px;
+  background: rgba(244, 236, 224, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent, #e7a93c);
+  transition: width 0.3s ease;
+}
 
 * {
   box-sizing: border-box;
