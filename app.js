@@ -628,7 +628,7 @@ if (themeBtn) {
 // KERALA BUS AIR HORN SYNTHESIZER (WEB AUDIO API)
 // ============================================================
 
-const hornAudio = new Audio("assets/horn.mp3");
+const hornAudio = new Audio("assets/Horn.mp3");
 
 function playKeralaBusHorn() {
   try {
