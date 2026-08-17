@@ -55,7 +55,103 @@ function getClientId() {
   return id;
 }
 
+// ============================================================
+// ENGINE START LOADING SCREEN
+// ============================================================
 
+function playEngineStartSound() {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return;
+  const ctx = new AudioCtx();
+
+  // Starter motor cranking — a few quick rhythmic clicks
+  function crank(startTime) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.setValueAtTime(90, startTime);
+    gain.gain.setValueAtTime(0.001, startTime);
+    gain.gain.linearRampToValueAtTime(0.25, startTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.12);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(startTime);
+    osc.stop(startTime + 0.12);
+  }
+
+  const crankStart = ctx.currentTime + 0.1;
+  for (let i = 0; i < 4; i++) crank(crankStart + i * 0.18);
+
+  // Engine catching and revving up — rising rumble
+  const engineStart = crankStart + 0.9;
+  const osc1 = ctx.createOscillator();
+  const osc2 = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc1.type = "sawtooth";
+  osc2.type = "square";
+  osc1.frequency.setValueAtTime(50, engineStart);
+  osc2.frequency.setValueAtTime(52, engineStart);
+
+  osc1.frequency.exponentialRampToValueAtTime(140, engineStart + 0.5);
+  osc2.frequency.exponentialRampToValueAtTime(144, engineStart + 0.5);
+  osc1.frequency.exponentialRampToValueAtTime(90, engineStart + 1.2);
+  osc2.frequency.exponentialRampToValueAtTime(92, engineStart + 1.2);
+
+  gain.gain.setValueAtTime(0.001, engineStart);
+  gain.gain.linearRampToValueAtTime(0.3, engineStart + 0.3);
+  gain.gain.linearRampToValueAtTime(0.15, engineStart + 1.2);
+  gain.gain.exponentialRampToValueAtTime(0.001, engineStart + 1.8);
+
+  osc1.connect(gain);
+  osc2.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc1.start(engineStart);
+  osc2.start(engineStart);
+  osc1.stop(engineStart + 1.8);
+  osc2.stop(engineStart + 1.8);
+}
+
+const startEngineBtn = document.getElementById("start-engine-btn");
+const loadingScreen = document.getElementById("loading-screen");
+const loadingStatus = document.getElementById("loading-status");
+const loadingBarTrack = document.getElementById("loading-bar-track");
+const loadingBarFill = document.getElementById("loading-bar-fill");
+
+if (startEngineBtn) {
+  startEngineBtn.addEventListener("click", () => {
+    startEngineBtn.hidden = true;
+    loadingBarTrack.hidden = false;
+
+    playEngineStartSound();
+
+    const steps = [
+      { pct: 20, text: "Cranking the engine..." },
+      { pct: 45, text: "Engine started" },
+      { pct: 70, text: "Tuning the radio..." },
+      { pct: 100, text: "Ready to roll!" },
+    ];
+
+    steps.forEach((step, i) => {
+      setTimeout(() => {
+        loadingBarFill.style.width = step.pct + "%";
+        loadingStatus.textContent = step.text;
+      }, i * 500);
+    });
+
+    // After the sequence, reveal the site and unlock audio playback
+    setTimeout(() => {
+      loadingScreen.classList.add("hidden");
+      setTimeout(() => { loadingScreen.style.display = "none"; }, 600);
+
+      if (ytReady) {
+        ytPlayer.unMute();
+        ytPlayer.playVideo();
+      }
+    }, steps.length * 500 + 400);
+  });
+}
 // ============================================================
 // HELPERS
 // ============================================================
