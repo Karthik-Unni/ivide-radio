@@ -628,39 +628,12 @@ if (themeBtn) {
 // KERALA BUS AIR HORN SYNTHESIZER (WEB AUDIO API)
 // ============================================================
 
+const hornAudio = new Audio("assets/horn.mp3");
+
 function playKeralaBusHorn() {
   try {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-
-    const osc1 = ctx.createOscillator();
-    const osc2 = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-
-    osc1.type = "sawtooth";
-    osc2.type = "square";
-
-    // Iconic twin dual-tone Kerala bus air horn frequencies (around 380Hz & 460Hz)
-    osc1.frequency.setValueAtTime(380, ctx.currentTime);
-    osc2.frequency.setValueAtTime(460, ctx.currentTime);
-
-    // Horn pitch pulse sequence (Pa-Pa-Paan!)
-    osc1.frequency.exponentialRampToValueAtTime(420, ctx.currentTime + 0.1);
-    osc2.frequency.exponentialRampToValueAtTime(500, ctx.currentTime + 0.1);
-
-    gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.05);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.65);
-
-    osc1.connect(gainNode);
-    osc2.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    osc1.start(ctx.currentTime);
-    osc2.start(ctx.currentTime);
-    osc1.stop(ctx.currentTime + 0.7);
-    osc2.stop(ctx.currentTime + 0.7);
+    hornAudio.currentTime = 0;
+    hornAudio.play();
   } catch (e) {
     console.error("Air horn SFX error:", e);
   }
