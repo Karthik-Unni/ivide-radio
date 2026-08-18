@@ -7,4 +7,3 @@ backend database of users, just a shared clock.
 <img width="959" height="412" alt="image" src="https://github.com/user-attachments/assets/9613e66d-d210-4cb2-bc2a-412b35b6f95c" />
 
 
-Project is still under dev
